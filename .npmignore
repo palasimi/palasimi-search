@@ -1,0 +1,8 @@
+*
+!LICENSE
+!README.md
+!dist/**/*.css
+!dist/**/*.js
+!dist/**/*.map
+!dist/**/*.ts
+!package.json
