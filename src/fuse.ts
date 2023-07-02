@@ -12,9 +12,17 @@ export type SearchKey = {
 
 // Fuse wrapper.
 export class Searcher<DocumentType> {
-  private fuse: Fuse<DocumentType>;
+  private fuse!: Fuse<DocumentType>;
+  private keys: SearchKey[];
 
-  constructor(docs: DocumentType[], keys: SearchKey[]) {
+  constructor(keys: SearchKey[], docs: DocumentType[] = []) {
+    this.keys = keys;
+    this.index(docs);
+  }
+
+  // Re-index.
+  index(docs: DocumentType[]) {
+    const keys = this.keys;
     const options = {
       keys,
       threshold: 0.3, // Stricter matches than the default 0.6
