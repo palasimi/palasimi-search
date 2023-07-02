@@ -3,6 +3,8 @@
 
 import "./search.css";
 
+import { debounce } from "./debouncing";
+
 import {
   createSuggestionsDiv,
   FollowFunction,
@@ -82,11 +84,13 @@ export function initSearchBox(
   const input = inputDiv.querySelector("input") as HTMLInputElement;
   initSearchInput(input);
 
-  box.addEventListener("input", async () => {
+  async function inputListener() {
     const query = input.value;
     const results = await search(query);
     updateSuggestions(query, results);
-  });
+  }
+
+  box.addEventListener("input", debounce(inputListener));
   box.addEventListener("keydown", (event) => {
     switch ((event as KeyboardEvent).keyCode) {
       case 13:
