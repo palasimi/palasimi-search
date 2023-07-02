@@ -14,3 +14,5 @@ export {
 } from "./search";
 
 export { FollowFunction, Suggestion } from "./suggestions";
+
+export { initWorker } from "./worker";
