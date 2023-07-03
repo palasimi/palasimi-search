@@ -4,7 +4,7 @@
 type EventListener = (event: Event) => void;
 
 // Debounces event listener.
-export function debounce(fn: EventListener, delay = 500): EventListener {
+export function debounce(fn: EventListener, delay = 250): EventListener {
   let timeout: number | null = null;
   return (event: Event) => {
     if (timeout != null) {
