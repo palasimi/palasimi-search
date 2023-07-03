@@ -4,17 +4,17 @@
 type EventListener = (event: Event) => void;
 
 // Debounces event listener.
-export function debounce(fn: EventListener, timeout = 500): EventListener {
-  let timeoutID: number | null = null;
+export function debounce(fn: EventListener, delay = 500): EventListener {
+  let timeout: number | null = null;
   return (event: Event) => {
-    if (timeoutID != null) {
-      clearTimeout(timeoutID);
-      timeoutID = null;
+    if (timeout != null) {
+      clearTimeout(timeout);
+      timeout = null;
     }
 
-    timeoutID = setTimeout(() => {
+    timeout = setTimeout(() => {
       fn(event);
-      timeoutID = null;
-    }, timeout);
+      timeout = null;
+    }, delay);
   };
 }

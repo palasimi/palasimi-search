@@ -57,6 +57,9 @@ export type SearchBoxOptions = {
 
   // Input element placeholder text.
   placeholder?: string;
+
+  // Debounce delay.
+  debounceDelay?: number;
 };
 
 export function createSearchBox(
@@ -64,7 +67,7 @@ export function createSearchBox(
   options: SearchBoxOptions = {}
 ): HTMLDivElement {
   const box = createDumbSearchBox(options.placeholder);
-  initSearchBox(box, search, options.follow);
+  initSearchBox(box, search, options);
   return box;
 }
 
@@ -74,10 +77,10 @@ export function createSearchBox(
 export function initSearchBox(
   box: Element,
   search: SearchFunction,
-  follow?: FollowFunction
+  options: SearchBoxOptions = {}
 ) {
   const [suggestionsDiv, updateSuggestions, down, up, enter] =
-    createSuggestionsDiv(follow);
+    createSuggestionsDiv(options.follow);
   box.append(suggestionsDiv);
 
   const inputDiv = box.querySelector(".search-input") as HTMLDivElement;
@@ -90,7 +93,7 @@ export function initSearchBox(
     updateSuggestions(query, results);
   }
 
-  box.addEventListener("input", debounce(inputListener));
+  box.addEventListener("input", debounce(inputListener, options.debounceDelay));
   box.addEventListener("keydown", (event) => {
     switch ((event as KeyboardEvent).keyCode) {
       case 13:
