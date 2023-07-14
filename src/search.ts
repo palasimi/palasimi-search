@@ -53,9 +53,9 @@ function createDumbSearchBox(placeholder = "Search concepts"): HTMLDivElement {
   return div;
 }
 
-export type SearchBoxOptions = {
+export type SearchBoxOptions<T extends Suggestion> = {
   // Tells what to do when the user clicks on a search result.
-  follow?: FollowFunction;
+  follow?: FollowFunction<T>;
 
   // Input element placeholder text.
   placeholder?: string;
@@ -64,9 +64,9 @@ export type SearchBoxOptions = {
   debounceDelay?: number;
 };
 
-export function createSearchBox(
-  search: SearchFunction,
-  options: SearchBoxOptions = {}
+export function createSearchBox<T extends Suggestion>(
+  search: SearchFunction<T>,
+  options: SearchBoxOptions<T> = {}
 ): HTMLDivElement {
   const box = createDumbSearchBox(options.placeholder);
   initSearchBox(box, search, options);
@@ -76,10 +76,10 @@ export function createSearchBox(
 // Initializes HTML-defined search box.
 // Takes an optional follow function, which tells what to do when the user
 // clicks on a search result.
-export function initSearchBox(
+export function initSearchBox<T extends Suggestion>(
   box: Element,
-  search: SearchFunction,
-  options: SearchBoxOptions = {}
+  search: SearchFunction<T>,
+  options: SearchBoxOptions<T> = {}
 ) {
   const [suggestionsDiv, updateSuggestions, down, up, enter] =
     createSuggestionsDiv(options.follow);

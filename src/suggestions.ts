@@ -10,7 +10,9 @@ export type Suggestion = {
 };
 
 // Action after clicking on a suggestion.
-export type FollowFunction = (suggestion: Suggestion) => void;
+export type FollowFunction<T extends Suggestion = Suggestion> = (
+  suggestion: T
+) => void;
 
 function createSuggestionTitle(title: string): HTMLDivElement {
   const div = document.createElement("div");
@@ -37,9 +39,9 @@ function defaultFollow(suggestion: Suggestion) {
 // Clicking on the div brings user to `suggestion.url`.
 // Takes an optional `follow` function that overrides the default behavior
 // when the user clicks on the div.
-function createSuggestion(
-  suggestion: Suggestion,
-  follow: FollowFunction = defaultFollow
+function createSuggestion<T extends Suggestion>(
+  suggestion: T,
+  follow: FollowFunction<T> = defaultFollow
 ): HTMLDivElement {
   const div = document.createElement("div");
   div.classList.add("suggestion");
@@ -68,9 +70,11 @@ function createNoSuggestionsFound(): HTMLDivElement {
 // into the div.
 // Takes an optional follow function, which tells what to do when the user
 // clicks on a suggestion.
-export function createSuggestionsDiv(follow: FollowFunction = defaultFollow): [
+export function createSuggestionsDiv<T extends Suggestion>(
+  follow: FollowFunction<T> = defaultFollow
+): [
   HTMLDivElement,
-  (query: string, results: Suggestion[]) => void, // update function
+  (query: string, results: T[]) => void, // update function
   () => void, // press down
   () => void, // press up
   () => void // press enter
@@ -78,7 +82,7 @@ export function createSuggestionsDiv(follow: FollowFunction = defaultFollow): [
   const div = document.createElement("div");
   div.classList.add("suggestions");
 
-  const update = (query: string, results: Suggestion[]) => {
+  const update = (query: string, results: T[]) => {
     if (query.length === 0) {
       div.replaceChildren();
       return;
