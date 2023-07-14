@@ -11,7 +11,9 @@ import {
   Suggestion,
 } from "./suggestions";
 
-export type SearchFunction = (query: string) => Promise<Suggestion[]>;
+export type SearchFunction<T extends Suggestion = Suggestion> = (
+  query: string
+) => Promise<T[]>;
 
 // Initialize input element.
 // Changes behavior of pressing enter and arrow keys.
